@@ -8,6 +8,7 @@
   * Beautiful Soup
   * Selenium
 
+
   * MySQL
   * DBeaver
 
