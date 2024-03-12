@@ -1,5 +1,4 @@
-# AI기반 게임 추천사이트
-![Uploading logo.png…]()
+# ![logo](https://github.com/SeoDongHyeok/RecommendGame/assets/144187210/752636e7-96d3-4bb1-a36c-b6f617d6327a)AI기반 게임 추천사이트
 
 ## :books:개발 스택
   * Spring Boot
