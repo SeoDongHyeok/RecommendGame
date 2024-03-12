@@ -13,3 +13,7 @@
 ## :floppy_disk:데이터 수집 위한 크롤링 진행영상
 
 > [Youtube 영상]  <https://www.youtube.com/watch?v=UljQ4VjI_IQ>
+
+
+## ERD
+![DB 다이어그램](https://github.com/SeoDongHyeok/RecommendGame/assets/144187210/d16faefb-35c6-4b89-a9d2-d8e85ce89f0e)
