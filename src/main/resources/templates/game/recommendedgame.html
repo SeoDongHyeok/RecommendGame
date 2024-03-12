@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout1}">
+<div layout:fragment="content">
+	<ul th:each="game : ${game}" class="game_list">
+		<div th:onclick="|location.href='@{${game.appId}}'|" class="game_list_box">
+			<li>
+				<img src="/images/Baldur's Gate 3_img.jpg">
+			</li>
+	        <li>
+				<span  th:text="${game.title}"></span>
+			</li>
+			<li>
+				<span th:text="${game.price}"></span>
+			</li>
+		</div>
+    </ul>
+
+</div>
+</html>

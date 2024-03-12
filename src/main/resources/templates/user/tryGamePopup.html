@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout2}">
+<th:block layout:fragment="script">
+	<meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <script th:inline="javascript">
+        var TryGameSelectedOptions = [];
+        var userId = getParameterByName('userId');
+        var csrfToken = $("meta[name='_csrf']").attr("content");
+        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+        function addTryGameSelectedOption() {
+            var selectedValue = $('#tryGameSelect').val();
+            var selectedText = $('#tryGameSelect option:selected').text();
+            if (selectedValue && !TryGameSelectedOptions.includes(selectedValue)) {
+                TryGameSelectedOptions.push(selectedText);
+                var span = $('<span class="sel_opt_span">').text(selectedText).attr('data-value', selectedValue);
+                $('#tryGameSelectedOptions').append(span);
+                document.getElementById('tryGameHidden').value = TryGameSelectedOptions.join(',');
+            }
+        }
+        function sendTryGame() {
+            var tryGame = $('#tryGameHidden').val();
+            $.ajax({
+                url: "/user/updatetriedGame",
+                type: "POST",
+                data: {
+                    trygame: tryGame,
+                    userId: userId
+                },
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                },
+                success: function (data) {
+                    console.log("Data sent successfully");
+                    window.opener.location.reload();
+                    window.close();
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error sending data:", error);
+                }
+            });
+        }
+        function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+    </script>
+</th:block>
+<h2>Login Content Page</h2>
+<div layout:fragment="content">
+    <div style="width:1000px">
+        <select id="tryGameSelect">
+            <option th:each="tryGame:${tryGameList}" th:text="${tryGame.title}" th:value="${tryGame.appId}"></option>
+        </select>
+        <button type="button" onclick="addTryGameSelectedOption()">게임 추가</button>
+    </div>
+    <br>
+    <div id="tryGameSelectedOptions">
+        <!-- 선택한 옵션을 표시할 곳 -->
+        <input type="hidden" id="tryGameHidden">
+    </div>
+    <button type="button" onclick="sendTryGame()">추가 완료</button>
+</div>
+</html>

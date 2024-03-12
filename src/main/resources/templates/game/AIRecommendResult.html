@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<th:block layout:fragment = "css">
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        h1 {
+			position: relative;
+            left: 40%; /* 좌측으로 100px 이동 */
+            /* 또는
+            right: 100px; 우측으로 100px 이동 */
+        }
+
+    </style>
+</th:block>
+<div layout:fragment="content">
+	
+	<br>
+	<h1>AI 추천 결과</h1>
+     <table th:each="game : ${game}" class="AI_game_table">
+        <tbody >
+            <tr th:onclick="|location.href='@{${game.appId}}'|"class="game_list_box" >
+			<td>
+				<img th:src="@{/images/{image}(image=${game.image})}">
+			</td>
+	        <td>
+				<span  th:text="${game.title}"></span>
+			</td>
+			<td>
+				<span th:text="${game.price}"></span>
+			</td>>
+		</tr>
+        </tbody>
+    </table>
+
+</div>
+</html>

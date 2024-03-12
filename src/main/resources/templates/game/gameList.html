@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout1}">
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</head>
+<th:block layout:fragment = "css">
+<style>
+</style>
+</th:block>
+<body>
+    <div layout:fragment="content">
+        <div class="custom-container">
+            <div class="custom-content">
+                <h1 class = "game_ListH1">게임 리스트</h1>
+                <div class="table-responsive" >
+                    <table class="game_table">
+				        <tbody>
+				            <tr th:each="game, gameIndex : ${game}" th:onclick="|location.href='../@{${game.appId}}'|" class="game_list_box">
+				                <td th:if="${page == 1}" th:text="${gameIndex.index+1}" style="text-align: center; vertical-align: middle;"></td>
+				                <td th:if="${page > 1}" th:text="${gameIndex.index+1 + (page-1)*10}" align="center" style="text-align: center; vertical-align: middle;"></td>
+				                <td>
+				                    <img th:src="@{/images/{img}(img=${game.image})}" alt="게임 이미지">
+				                </td>
+				                <td th:text="${game.title}"></td>
+				                <td th:text="${game.price}"></td>
+				            </tr>
+				        </tbody>
+    				</table>
+    			</div>
+            </div>
+        </div>
+        <div class="list_box">
+		    <ul class="list_page">
+		         <li th:if="${currentPage > 0}">
+		             <div th:onclick="|location.href='@{/game/search/{prevPage}?search={search}(prevPage=${page-1},search=${search})}'|">Prev</div>
+		         </li>
+		         <li th:each="pageNum : ${#numbers.sequence(startPage, endPage)}">
+		             <div th:onclick="|location.href='@{/game/search/{page}?search={search}(page=${pageNum},search=${search})}'|" th:text="${pageNum}" 
+		             th:class="'page ' + (${page == pageNum} ? 'page-present' : '')"></div>
+		         </li>
+		         <li th:if="${currentPage < pageCount}">
+		             <div th:onclick="|location.href='@{/game/search/{nextPage}?search={search}(nextPage=${page+1},search=${search})}'|">Next</div>
+		         </li>
+		         <li th:if="${pageCount == 1}">
+		             <div th:onclick="|location.href='#'|">Next</div>
+		         </li>
+		    </ul>
+	    </div>
+	</div>
+</body>
+</html>

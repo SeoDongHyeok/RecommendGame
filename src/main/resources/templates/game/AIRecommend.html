@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout1}">
+<head>
+    <!-- 추가한 스타일 -->
+    <style>
+        #cateContainer {
+            margin-top: 20px; /* 필요한 경우 조절 */
+        }
+
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            margin-bottom: 10px; /* 필요한 경우 조절 */
+           	margin-left: 10%;
+            border: 1px solid  #ddd;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        button {
+            margin-top: 10px; /* 필요한 경우 조절 */
+            
+        }
+        .search_button{
+			margin-left: 43%;
+		}
+
+        #cateSelect {
+            width: 80%; /* 셀렉트 박스가 테이블의 전체 너비를 차지하도록 함 */
+            margin-bottom: 10px; /* 필요한 경우 조절 */
+        }
+
+        #cateSelectCell, #addTagCell {
+            width: 50%; /* 칸을 반씩 차지하도록 함 */
+        }
+
+        #addTagCell {
+            text-align: right; /* 오른쪽 정렬 */
+        }
+    </style>
+</head>
+<th:block layout:fragment="script">
+	<meta name="_csrf" th:content="${_csrf.token}"/>
+	<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <script th:inline="javascript">
+		
+        var CateSelectedOptions = [];
+        var csrfToken = $("meta[name='_csrf']").attr("content");
+        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+
+        function addCateSelectedOption() {
+            var selectedValue = $('#cateSelect').val();
+            var selectedText = $('#cateSelect option:selected').text();
+
+            if (selectedValue && !CateSelectedOptions.includes(selectedValue)) {
+                CateSelectedOptions.push(selectedValue);
+
+                var row = $('<tr>');
+                var cell = $('<td class="selectedCategory">').text(selectedText);
+                var buttonCell = $('<td>').append('<button type="button" onclick="removeCateSelectedOption(this)">삭제하기</button>');
+                
+                row.append(cell, buttonCell);
+                $('#cateSelectedOptions tbody').append(row);
+
+                document.getElementsByClassName('selectedCategory').value = CateSelectedOptions.join(',');
+            	
+            }
+        }
+
+        function removeCateSelectedOption(button) {
+            var rowIndex = $(button).closest('tr').index();
+            CateSelectedOptions.splice(rowIndex, 1);
+            $(button).closest('tr').remove();
+
+            document.getElementById('selectedCategory').value = CateSelectedOptions.join(',');
+        }
+		function updatePage(data) {
+		        // 받아온 데이터를 이용하여 동적으로 HTML 업데이트 또는 추가
+		        var resultContainer = $("#resultContainer");
+				console.log("이거 도냐???")
+		        // 예시: 받아온 데이터를 반복하면서 새로운 요소를 생성하여 추가
+		        resultContainer.html(data);
+		    }
+        function sendAICategory() {
+            var categories = CateSelectedOptions.join(',');
+
+            $.ajax({
+                url: "/game/recommend",
+                type: "POST",
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                data: {
+                    AICate: categories,
+                },
+                beforeSend: function(xhr) {
+                    if (csrfHeader && csrfToken) {
+                        xhr.setRequestHeader(csrfHeader, csrfToken);
+                    }
+                },
+                success: function (data) {
+                    console.log("Data sent successfully", data);
+					updatePage(data);
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error sending data:", error);
+                }
+            });
+        }
+    </script>
+</th:block>
+
+<h2>Login Content Page</h2>
+<div layout:fragment="content">
+    <div id="cateContainer">
+        <table id="cateSelectedOptions">
+            <thead>
+                <tr>
+                    <th colspan="2"> <!-- 두 개의 셀로 병합 -->
+                    <select id="cateSelect">
+                        <option th:each="cate:${category}" th:text="${cate.category}" th:value="${cate.category}"></option>
+                    </select>
+                      <button type="button" onclick="addCateSelectedOption()">태그 추가하기</button>
+                    </th>
+                </tr>
+                <tr>
+                    <th>선택한 옵션</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- 선택한 옵션을 표시할 곳 -->
+            </tbody>
+        </table>
+
+        <button class="search_button" type="button" onclick="sendAICategory()">검색하기</button>
+    </div>
+     <div id="resultContainer">
+        <!-- 이곳에 받아온 HTML을 주입할 것입니다. -->
+    </div>
+</div>
+
+</html>

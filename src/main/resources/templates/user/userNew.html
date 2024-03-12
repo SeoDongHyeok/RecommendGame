@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout=http://www.ultraq.net.nz/thymeleaf/layout
+	layout:decorate="~{layouts/layout1}">
+
+<th:block layout:fragment="css">
+	<style>
+		.fieldError {
+			color: #bd2130;
+		}
+	</style>
+</th:block>
+
+<th:block layout:fragment="script">
+	<script th:inline="javascript">
+		$(document).ready(function () {
+			var errorMessage = [[${errorMessage}]];
+
+			if (errorMessage != null) {
+				alert(errorMessage);
+			}
+		});			
+		
+		//싫어하는 태그 선택 메소드
+		var CateSelectedOptions = []; // 선택한 옵션을 저장할 배열
+		
+        function addCateSelectedOption() {
+            var selectedValue = $('#cateSelect').val();
+            var selectedText = $('#cateSelect option:selected').text();
+
+            if (selectedValue && !CateSelectedOptions.includes(selectedValue)) {
+                CateSelectedOptions.push(selectedValue);
+
+                // 선택한 옵션을 표시하는 span을 동적으로 생성하여 추가
+                var span = $('<span class="sel_opt_span">').text(selectedText).attr('data-value', selectedValue);
+                $('#cateSelectedOptions').append(span);
+                
+                document.getElementById('hCateHidden').value = CateSelectedOptions
+                
+            }
+        }
+		
+		//해본게임 선택 메소드		
+		var GameSelectedOptions = []; // 선택한 옵션을 저장할 배열
+
+		
+        function addGameSelectedOption() {
+            var selectedValue = $('#gameSelect').val();
+            var selectedText = $('#gameSelect option:selected').text();
+
+            if (selectedValue && !GameSelectedOptions.includes(selectedValue)) {
+                GameSelectedOptions.push(selectedValue);
+
+                // 선택한 옵션을 표시하는 span을 동적으로 생성하여 추가
+                var span = $('<span class="sel_opt_span">').text(selectedText).attr('data-value', selectedValue);
+                $('#gameSelectedOptions').append(span);
+                
+                document.getElementById('tryGameHidden').value = GameSelectedOptions
+            }
+        }
+        
+        
+        
+
+	</script>
+</th:block>
+
+<h2>Main Content Page </h2>
+<div layout:fragment="content" style="width: 80%; margin-left: 10%;">
+	<h2>Member Input</h2>
+	<form action="/user/new" role="form" method="post" th:object="${userFormdto}">
+		<div class="form-group">
+			<label th:for="userId">아이디</label>
+			<input type="text" th:field="*{userId}" class="form-control" placeholder="아이디를 입력해주세요">
+			<p th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}" class="fieldError">Incorrect data</p>
+			<div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+    			<span th:text="${errorMessage}"></s>
+			</div>
+		</div>
+		<div class="form-group">
+			<label th:for="userPw">비밀번호</label>
+			<input type="password" th:field="*{userPw}" class="form-control" placeholder="비밀번호 입력">
+			<p th:if="${#fields.hasErrors('userPw')}" th:errors="*{userPw}" class="fieldError">Incorrect data</p>
+		</div>
+		<div class="form-group">
+			<label th:for="hCate">싫어하는 카테고리</label>
+			<br>
+			<select id="cateSelect">
+				<option th:each="cate : ${category}" th:value="${cate.category}" th:text="${cate.category}"></option>
+			</select>
+			<button type="button" onclick="addCateSelectedOption()">추가</button>
+		</div>
+		<br>
+		<div id="cateSelectedOptions" >
+        	<!-- 선택한 옵션을 표시할 곳 -->
+        	<input type="hidden" th:field="*{hCate}" id="hCateHidden">
+    	</div>
+		<div class="form-group">
+			<label th:for="tryGame">해본 게임</label>
+			<br>
+			<select id="gameSelect">
+				<option th:each="game : ${gameList}" th:value="${game.appId}" th:text="${game.title}"></option>
+			</select>
+			<button type="button" onclick="addGameSelectedOption()">추가</button>
+		</div>
+		<div id="gameSelectedOptions" >
+        	<!-- 선택한 옵션을 표시할 곳 -->
+        	<input type="hidden" th:field="*{tryGame}" id="tryGameHidden">
+    	</div>
+		<div style="text-align: center">
+			<button type="submit" class="btn btn-primary">Submit</button>
+		</div>
+		<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+	</form>
+</div>
+</html>

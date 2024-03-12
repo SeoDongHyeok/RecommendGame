@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout1}">
+      
+<head>
+    <style>
+
+        .col-md-6 {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Main Content Page</h2>
+    <div layout:fragment="content" class="container text-center">
+        <h1>운영자 추천 게임</h1>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <a href="/game/1623730">
+                	<img src="/images/Palworld_img.jpg" alt="게임 이미지" style="width: 100%; max-width: 400px;">
+            	</a>
+            </div>
+            <div class="col-md-6">
+				<a href="/game/1805480">
+                	<img src="/images/Like a Dragon Ishin!_img.jpg" alt="게임 이미지" style="width: 100%; max-width: 400px;">
+				</a>
+            </div>
+            <div class="col-md-6">
+				<a href="/game/228280">
+                	<img src="/images/Baldur's Gate Enhanced Edition_img.jpg" alt="게임 이미지" style="width: 100%; max-width: 400px;">
+            	</a>
+            </div>
+            <div class="col-md-6">
+				<a href="/game/1966720">
+                	<img src="/images/Lethal Company_img.jpg" alt="게임 이미지" style="width: 100%; max-width: 400px;">
+            	</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

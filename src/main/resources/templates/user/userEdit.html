@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout=http://www.ultraq.net.nz/thymeleaf/layout
+	  layout:decorate="~{layouts/layout1}">
+<head>
+	<meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+</head>
+<th:block layout:fragment="css">
+	<style>
+		.error {
+			color: #BD2130;
+		}
+	</style>
+</th:block>
+<th:block layout:fragment="script">
+	<script>
+		function deleteFunction(){
+			del_check = confirm("정말로 탙퇴하시겠습니까?")
+			if(del_check)
+				window.location.href="/user/delete";	
+		}
+		function openCategoryPopup() {
+		    // 테이블 데이터를 가져와서 문자열로 변환
+		    var table = document.getElementById('hCateVal');
+			var rowList = table.rows;
+			var categoryData = [];
+			for (var i = 0; i < rowList.length; i++) {
+			    var cells = rowList[i].cells;
+			   
+			    // 첫 번째 셀에서 텍스트 가져오기
+			    var cellText = cells[0].innerText || cells[0].textContent;
+			
+			    // "태그 삭제"가 아닌 경우에만 출력
+			    if (cellText.trim() !== "태그 삭제") {
+			        categoryData.push(cellText.trim());
+			    }
+			}
+		    // 가져온 데이터를 콤마로 구분된 문자열로 변환
+		    var category = categoryData.join(',');
+		
+		   
+		    console.log(category);
+		
+		    // 팝업 창 열기
+		    var userId = $("#userId").text();
+		    var popupWindow = window.open('/user/categoryPopup?userId=' + userId + '&category=' + category, 'Popup', 'width=600,height=500');
+		}
+		function deleteCategory(button) {
+		    var $button = $(button);
+		    var trToDelete = $button.closest('tr');
+		    var userId = $("#userId").text();
+		    var table = document.getElementById('hCateVal');
+			var rowList = table.rows;
+		    if (trToDelete) {
+		        trToDelete.remove();
+		        var categoryText = [];
+			    for (var i = 0; i < rowList.length; i++) {
+				     var cells = rowList[i].cells;
+				   
+				     // 첫 번째 셀에서 텍스트 가져오기
+				     var cellText = cells[0].innerText || cells[0].textContent;
+				
+				     // "태그 삭제"가 아닌 경우에만 출력
+				     if (cellText.trim() !== "태그 삭제") {
+				         categoryText.push(cellText.trim());
+				     }
+				}
+	
+			    // 가져온 데이터를 콤마로 구분된 문자열로 변환
+			    var category = categoryText.join(',');
+		
+		        // 데이터를 서버로 전송 (컨트롤러 엔드포인트로)
+		        sendCategoriesToController(category);
+		    } else {
+		        console.error('부모 li를 찾을 수 없습니다.');
+		    }
+		}
+		function sendCategoriesToController(hCate) {
+		    // Retrieve CSRF token and header
+		    var csrfToken = $("meta[name='_csrf']").attr("content");
+		    var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+		
+		    // Ajax를 사용하여 데이터를 서버로 전송
+		    $.ajax({
+		        url: "/user/deleteCategory",
+		        type: "POST",
+		        data: {
+		            userId: $("#userId").text(),
+		            hCate: hCate
+		        },
+		        beforeSend: function(xhr) {
+		            // CSRF 토큰과 헤더를 설정
+		            if (csrfToken && csrfHeader) {
+		                xhr.setRequestHeader(csrfHeader, csrfToken);
+		            } else {
+		                console.error('CSRF 토큰 또는 헤더가 없습니다.');
+		            }
+		        },
+		        success: function (data) {
+		            console.log("Data sent successfully");
+		            alert("싫어하는 카테고리가 성공적으로 삭제되었습니다.");
+		        },
+		        error: function (xhr, status, error) {
+		            console.error("Error sending data:", error);
+		        }
+		    });
+		}
+		function deleteTryGame(button) {
+		    var $button = $(button);
+		    var trToDelete = $button.closest('tr');
+		
+		    if (trToDelete) {
+		        // 기존의 deleteCategory 함수에서 태그 삭제 기능을 수행
+		        // 여기에 추가적인 게임 삭제 로직을 작성
+		        var gameName = trToDelete.find('td:first-child').text(); // 삭제할 게임 이름 가져오기
+		        var userId = $("#userId").text();
+		        // CSRF 토큰 가져오기
+		        var csrfToken = $("meta[name='_csrf']").attr("content");
+		        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+		
+		        // 게임 삭제를 서버에 요청
+		        $.ajax({
+		            url: "/user/deleteGame",
+		            type: "POST",
+		            data: { gameName: gameName, userId: userId },
+		            beforeSend: function (xhr) {
+		                xhr.setRequestHeader(csrfHeader, csrfToken);
+		            },
+		            success: function (data) {
+		                // 삭제 성공 시 tr 요소 제거
+		                trToDelete.remove();
+		                alert("게임이 성공적으로 삭제되었습니다.");
+		            },
+		        });
+		        // 여기서 추가적인 처리를 수행할 수 있습니다.
+		    } else {
+		        console.error('부모 tr를 찾을 수 없습니다.');
+		    }
+		}
+		function setCategory(category){
+			var categoryArray=category.split(",");
+			
+			for(var i=0; i<categoryArray.length;i++){
+				var categoryName = categoryArray[i].trim(); // 카테고리 이름에서 공백 제거
+		        // 이미 존재하는 카테고리인지 확인
+		        var isDuplicate = false;
+		        $('#hCateVal li span').each(function () {
+		            if ($(this).text().trim() === categoryName) {
+		                isDuplicate = true;
+		                return false; // 중복이면 순회 중단
+		            }
+		        });
+		       
+		        if (!isDuplicate && categoryName != "") {
+		            // 중복이 아니면 추가
+		            var spanElement = $('<span>').text(categoryName);
+		           
+		            // button 요소 생성 및 클릭 이벤트 설정 (예: deleteCategory 함수 호출)
+		            var buttonElement = $('<button type=button>').text('태그 삭제').attr('onclick', 'deleteCategory(this)');
+		
+		            // li 요소 생성 및 span, button 요소 추가
+		            var liElement = $('<li>').append(spanElement, buttonElement);
+		
+		            $('#hCateVal').append(liElement);
+		        }
+			}
+			var categoryText=[]
+			//span태그의 hCate text값을 순회하면서 값을 가져옴
+			$('#hCateVal li span').each(function() {
+        		categoryText.push($(this).text());});
+        	
+        	//hidden 타입 input에 categoryText값을 넣음
+			$('#categoryHidden').val(categoryText.join(','));
+		}
+		
+		function openTryGamePopup(){
+			var userId = $("#userId").text();
+            window.open('/user/tryGamePopup?userId=' + userId, 'Popup', 'width=600,height=500');
+			
+		}
+		
+		function setTryGame(tryGame){
+			var tryGameArray=tryGame.split(",");
+			for(var i=0; i<tryGameArray.length;i++){
+				var tryGameName = tryGameArray[i].trim(); // 카테고리 이름에서 공백 제거
+		        // 이미 존재하는 카테고리인지 확인
+		        var isDuplicate = false;
+		        $('#tryGameVal li span').each(function () {
+		            if ($(this).text().trim() === tryGameName) {
+		                isDuplicate = true;
+		                return false; // 중복이면 순회 중단
+		            }
+		        });
+		       
+		        if (!isDuplicate && tryGameName != "") {
+		            // 중복이 아니면 추가
+		            var spanElement = $('<span>').text(tryGameName);
+		            // button 요소 생성 및 클릭 이벤트 설정 (예: deleteCategory 함수 호출)
+		            var buttonElement = $('<button type=button>').text('게임 삭제').attr('onclick', 'deleteTryGame(this)');
+		
+		            // li 요소 생성 및 span, button 요소 추가
+		            var liElement = $('<li>').append(spanElement, buttonElement);
+		
+		            $('#tryGameVal').append(liElement);
+		        }
+			}
+			var tryGameText=[]
+			//span태그의 hCate text값을 순회하면서 값을 가져옴
+			$('#tryGameVal li span').each(function() {
+        		tryGameText.push($(this).text());});
+        	
+        	//hidden 타입 input에 categoryText값을 넣음
+			$('#tryGameHidden').val(tryGameText.join(','));
+		}
+	</script>
+</th:block>
+	<h2>Login Content  Page </h2>
+	<div layout:fragment="content" style="width: 80%; margin-left: 10%;">
+	<h2>Member Input</h2>
+	<form action="/user/edit" role="form" method="post">		
+		<div class="form-group">
+			<label th:for="userId" >아이디</label>
+			<input type="hidden" th:name = "userId" th:value="${userId}"/>
+			<p th:text="${userId}" id = "userId" name ="userId"></p>
+		</div>
+		<div class="form-group">
+			<label th:for="userPw">기존 비밀번호</label>
+			<input type="password" th:name="userPw" class="form-control" placeholder="비밀번호 입력">
+			<p th:if="${loginErrorMsg}" class="error" th:text="${loginErrorMsg}"></p><br>
+		</div>
+		<div class="form-group">
+			<label th:for="update_userPw">수정할 비밀번호</label>
+			<input type="password" th:name="update_userPw" th:id="update_userPw" class="form-control" placeholder="비밀번호 입력">
+			<p th:if="${loginErrorMsg}" class="error" th:text="${loginErrorMsg}"></p><br>
+		</div>
+		<div class="form-group">
+            <label th:for="hCate">싫어하는 카테고리</label>&nbsp;&nbsp;&nbsp;&nbsp;
+            <button type="button" onclick="openCategoryPopup()">태그 추가</button>
+            <table id="hCateTable">
+                <thead>
+                    <tr>
+                        <th>카테고리</th>
+                        <th>동작</th>
+                    </tr>
+                </thead>
+                <tbody id="hCateVal">
+                    <tr th:each="hCate:${hCate}">
+                        <td th:text="${hCate}" th:value="${hCate}" id="${hCate}"></td>
+                        <td>
+                            <button type="button" onclick="deleteCategory(this)">태그 삭제</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <input type="hidden" name="hCate" th:value="${hCate}" id="categoryHidden"/>
+        </div>
+        <!-- 테이블로 변환된 부분 끝 -->
+        <!-- 테이블로 변환된 부분 시작 -->
+        <div class="form-group">
+            <label th:for="tryGame">해본 게임</label>&nbsp;&nbsp;&nbsp;&nbsp;
+            <button type="button" onclick="openTryGamePopup()">게임 추가</button>
+            <table id="tryGameTable">
+                <thead>
+                    <tr>
+                        <th>게임</th>
+                        <th>동작</th>
+                    </tr>
+                </thead>
+                <tbody id="tryGameVal">
+                    <tr th:each="tryGame:${tryGame}">
+                        <td th:text="${tryGame}" th:value="${tryGame}" id="${tryGame}"></td>
+                        <td>
+                            <button type="button" onclick="deleteTryGame(this)">게임 삭제</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <input type="hidden" name="tryGame" th:value="${tryGame}" id="tryGameHidden"/>
+        </div>
+		<div style="text-align: center">
+			<button class="btn btn-primary">비밀번호 수정</button>
+			<button type="button" class="btn btn-primary" onclick="deleteFunction()">회원탈퇴</button>
+			<button type="button" class="btn btn-primary" onclick="location.href='/';">돌아가기</button>
+			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+		</div>
+		
+	</form>
+</div>		
+</html>

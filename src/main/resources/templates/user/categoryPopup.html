@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout2}">
+<th:block layout:fragment="script">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <script th:inline="javascript">
+        var CateSelectedOptions = [];
+        var userId = getParameterByName('userId');
+        var csrfToken = $("meta[name='_csrf']").attr("content");
+        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+        function addCateSelectedOption() {
+            var selectedValue = $('#cateSelect').val();
+            var selectedText = $('#cateSelect option:selected').text();
+            if (selectedValue && !CateSelectedOptions.includes(selectedValue)) {
+                CateSelectedOptions.push(selectedValue);
+                var row = $('<tr>');
+                var cellText = $('<td>').text(selectedText);
+                var cellButton = $('<td>').append('<button type="button" onclick="removeCateSelectedOption(this)">삭제하기</button>');
+                row.append(cellText, cellButton);
+                $('#cateSelectedOptions tbody').append(row);
+                document.getElementById('hCateHidden').value = CateSelectedOptions.join(',');
+            }
+        }
+        function removeCateSelectedOption(button) {
+            var rowIndex = $(button).closest('tr').index();
+            CateSelectedOptions.splice(rowIndex, 1);
+            $(button).closest('tr').remove();
+            document.getElementById('hCateHidden').value = CateSelectedOptions.join(',');
+        }
+        function sendCategory() {
+            var categories = CateSelectedOptions.join(',');
+            var parentCategory = getParameterByName('category');
+        	console.log(parentCategory)
+            $.ajax({
+                url: "/user/updateCategory",
+                type: "POST",
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                data: {
+                    hCate: categories,
+                    userId: userId,
+                    parentCategory: parentCategory
+                },
+                beforeSend: function(xhr) {
+                    if (csrfHeader && csrfToken) {
+                        xhr.setRequestHeader(csrfHeader, csrfToken);
+                    }
+                },
+                success: function (data) {
+                    console.log("Data sent successfully");
+                    window.opener.location.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error sending data:", error);
+                }
+            });
+        }
+        function getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+    </script>
+</th:block>
+<h2>Login Content Page</h2>
+<h1></h1>
+<div layout:fragment="content">
+    <div style="width:1000px">
+        <select id="cateSelect">
+            <option th:each="cate:${category}" th:text="${cate.category}" th:value="${cate.category}"></option>
+        </select>
+        <button type="button" onclick="addCateSelectedOption()">태그 추가</button>
+    </div>
+    <br>
+    <table id="cateSelectedOptions" class="table" style="width: 400; height: 300;">
+        <thead>
+            <tr>
+                <th>선택한 옵션</th>
+                <th>삭제</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- 선택한 옵션을 표시할 곳 -->
+        </tbody>
+    </table>
+    <h1></h1>
+    <input type="hidden" id="hCateHidden">
+    <button type="button" onclick="sendCategory()">추가 완료</button>
+</div>
+</html>

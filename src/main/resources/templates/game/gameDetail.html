@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout1}">
+
+	<div layout:fragment="content" style="width: 80%; margin-left: 10%;">
+		<table class="gameDetail_table">
+			<tr>
+				<td class="column1">Game_No</td>
+				<td th:text="${game.appId}"></td>
+			</tr>
+			
+			<tr>
+				<td class="column1">Title</td>
+				<td th:text="${game.title}"></td>
+			</td>
+			
+			<tr>
+				<td class="column1">Tag</td>
+				<td th:text="${game.category}"></td>
+			</td>
+			
+			<tr>
+				<td class="column1">개발사</td>
+				<td th:text="${game.develope}"></td>
+			</tr>
+			
+			<tr>
+				<td class="column1">배급사</td>
+				<td th:text="${game.publish}"></td>
+			</tr>
+			
+			<tr>
+				<td class="column1">종합평가</td>
+				<td th:text="${game.evaluate}"></td>
+			</tr>
+			
+			<tr>
+				<td class="column1">게임 소개</td>
+				<td th:text="${game.explan}"></td>
+			</tr>
+			
+			<tr>
+				<td class="column1">지원언어</td>
+				<td th:text="${game.lang}"></td>
+			</td>
+			</tr>
+			
+			<tr>
+				<td class="column1">최소사양</td>
+				<td th:text="${game.minSpec}"></td>
+			</tr>
+			
+			<tr >
+				<td class="column1">권장 사양</td>
+				<td th:text="${game.recSpec}"></td>
+			</tr>
+			
+			<tr>
+				<td class="column1">게임방식</td>
+				<td th:text="${game.multiPoss}"></td>
+			</tr>
+			
+			<tr>
+				<td class="column1">가격</td>	
+				<td th:text="${game.price}"></td>
+			</tr>
+			
+			<tr>
+				<td class="column1">이미지</td>	
+			 	<td><img th:src="@{/images/{img}(img=${game.image})}" alt="게임 이미지"></td>
+			</tr>
+			
+			<tr>
+				<td colspan="2">
+					<div style="border: 3px solid #0dcaf0;" class="review_box">
+						<ul class="review_ul">
+							<li>
+								<span>긍정리뷰</span>
+							</li>
+							<li th:each="review : ${review}">
+								<div th:if="${review.label == '1'}" class="card-content" style="border: 1px solid cadetblue;">
+									<span th:text="${review.review}" class="card-description"></span>
+									<input type="checkbox" class="card-content__more-btn" >
+								</div>
+							</li>
+						</ul>
+					</div>
+					<div style="border: 3px solid #e83e8c;" class="review_box">
+						<ul class="review_ul">
+							<li>
+								<span>부정리뷰</span>
+							</li>
+							<li th:each="review : ${review}">
+								<div th:unless="${review.label == '1'}" class="card-content" style="border: 1px solid palevioletred;">
+									<span th:text="${review.review}" class="card-description"></span>
+									<input type="checkbox" class="card-content__more-btn" >
+								</div>
+							</li>
+						</ul>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</div>								
+					
+</html>

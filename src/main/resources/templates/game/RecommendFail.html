@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout1}">
+      
+<th:block layout:fragment="script">
+    <script>
+        alert("추천결과가 존재하지 않습니다.");
+        window.location.href='/game/AIRecommand';
+    </script>
+</th:block>
+</html>

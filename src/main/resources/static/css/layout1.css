@@ -1,0 +1,263 @@
+@charset "UTF-8";
+
+* {
+	 box-sizing: border-box;
+  	}
+html {
+	position: relative;
+	height: 100%;
+	margin: 0;
+	width: 100%;
+	x-overflow: hidden;
+}
+
+body {
+	max-height: 100%;
+	max-width: 100%;
+	x-overflow: hidden;
+}
+
+.footer {
+	position: relative;
+	left: 0;
+	right: 0;
+	bottom: 0%;
+	width: 100%;
+	padding: 15px 0;
+	text-align: center;	
+}
+
+.content {
+	position: relative;
+	margin-bottom: 100px;
+	margin-top: 50px;
+	margin-left: 0px;
+	width: 100%;
+}
+/*<--------------------------------------------------- 게임 디테일 ----------------------------------------------------------------------->*/
+.detail{
+	border: 1px solid darkgray;
+}
+
+.detail li{
+	border-bottom: 1px solid darkgray r;
+	list-style: none;
+}
+
+.gameDetail_table {
+            width: 97%;
+            border-collapse: collapse;
+            margin-bottom: 10px; /* 필요한 경우 조절 */
+            border: 1px solid  #ddd;
+        }
+
+        th{
+            padding: 8px;
+            text-align: left;
+        }
+        td{
+			border: 1px solid darkblue;
+		}
+		
+		
+		.card-content {
+		  width: 80%;
+		  background-color: #fff;
+		  border-radius: 1rem;
+		  overflow: hidden;
+		  margin: 5rem auto;
+		  padding-bottom: 3rem;
+		}
+		
+		.card-description {
+		  font-size: 20px;
+		  padding: 1rem;
+		 
+		  /* 추가하기 */
+		  display: -webkit-box;
+		  -webkit-line-clamp: 3;
+		  -webkit-box-orient: vertical; 
+		  overflow: hidden;
+		}
+					
+		
+		.card-content__more-btn {
+		  background-image: url('../../static/images/more.jpg');
+		  border: 1px solid gray;
+		  padding: 0.5em;
+		  border-radius: 0.25em;
+		  cursor: pointer;
+		  margin: 1rem;
+		}
+		
+		.card-content__more-btn::before {
+		  content: '더보기';
+		}
+		
+		.card-content__more-btn:checked::before {
+		  content: '닫기';
+		}
+		
+		.card-description:has(+ .card-content__more-btn:checked) {
+		  -webkit-line-clamp:unset
+		}
+		
+		.review_box{
+			width: 41%; 
+			display: inline-flex;
+			margin-left: 6%;
+			border-radius: 1rem;
+		}
+		
+		.review_ul{
+			list-style: none;
+			padding-left: 0;
+			width: 100%;
+		}
+		
+		.review_ul li:first-child{
+			text-align: center;
+			font-size: larger;
+			margin-top: 3rem;
+		}
+		
+
+/*<--------------------------------------------------- 게임 리스트 table ----------------------------------------------------------------------->*/
+		.game_table, .AI_game_table {
+            width: 85%;
+            border-collapse: collapse;
+            margin-top: 20px; /* 필요한 경우 조절하세요 */
+            margin-left: 100px;
+            
+        }
+
+        .game_table th, .game_table td, .AI_game_table td{
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+            max-width: 50%;
+            vertical-align: middle;
+        }
+		.AI_game_table td:nth-child(1){
+			width: 40%;
+		}
+		.AI_game_table td:nth-child(2){
+			width: 30%;
+		}
+		.AI_game_table td:nth-child(3){
+			width: 30%;
+		}
+		
+        .game_table img {
+            width: 100%;
+            max-width: 150px; /* 필요한 경우 조절하세요 */
+            height: 100%;
+        }
+
+        .custom-container {
+            max-width: 1200px; /* 조절할 넓이 */
+            margin: 0 auto auto 200px; /* 페이지 중앙 정렬 */
+        }
+
+        .custom-content {
+            text-align: center;
+            margin-top: 20px;
+        }
+/* <--------------------------------------------------		게임리스트 css					----------------------------------------------------->*/
+.game_list{ 
+	width: 80%; /* px로 바꾸면 고정 */ 
+	height: 100px;
+	border: 1px solid gray;
+}
+
+.game_list_box{
+	width: 100%;
+	height: 100%;
+}
+.game_list_box:hover{
+	width: 100%;
+	height: 100%;
+	border: 1px solid red;
+	background-color: red;
+	cursor:pointer
+}
+
+.game_list td:nth-child(1){
+	width:50%;
+	float: left;
+	border: 1px solid gray;
+}
+.game_list td:nth-child(2){
+	width:30%;
+	float: center;
+	border: 1px solid blue;
+}
+.game_list td:nth-child(3){
+	width:20%;
+	float: center;
+	border: 1px solid green;
+}
+
+.game_list img{
+	width: 200px;
+	height: 90px;
+	margin-right: 30px;
+	border: 1px solid gray;
+}
+
+.list_box {
+    width: 50%;
+    height: 50px;
+    margin: 0 auto auto 350px;
+}
+
+.list_page li{
+	list-style: none;
+	width: 50px;
+	float: left;
+	padding-left: 0;
+	border: 1px solid gray;
+}
+
+.list_page {
+	display: flex;    justify-content: center;    align-items: center;
+    text-align: center;
+    margin:0 auto;
+    align-self: center;
+}
+
+.list_page div:hover{
+	background-color: blue;
+	cursor:pointer
+}
+
+.page.page-present {
+		        background-color: #4CAF50; /* 배경색을 원하는 색으로 변경하세요 */
+		        color: white;
+		    }
+/* <------------------------------------------------------------------------------------------------------------------------------------------------------------->*/
+
+.sel_opt_span{
+	border: 1px solid gray;
+	width: 70%;
+	display: inline-block;
+}
+/*--------------------------------- 팝업 */
+#cateSelect{
+		width:200px;
+		position: relative;
+		float:left;
+		margin-right:20px;
+	}
+/*---------------------------------  */
+
+.column1{
+	border-right:1px dashed gray;
+	width: 150px;
+	text-align: center;
+	vertical-align: middle;
+}
+		
+.column1 img{
+	vertical-align: middle;
+}

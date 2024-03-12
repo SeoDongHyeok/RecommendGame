@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout1}">
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/manageList.css">
+</head>
+<th:block layout:fragment = "css">
+	<style>
+		 .search-wrap {
+        display: flex; /* Use flexbox to make the children flex items */
+        align-items: center; /* Align items vertically in the center */
+        overflow-y: hidden;
+	    }
+	
+	    .search-wrap label,
+	    .search-wrap select,
+	    .search-wrap input,
+	    .search-wrap button {
+	        margin-right: 10px; /* Add some spacing between the elements */
+	    }
+		.btn.btn-dark{
+			width: 50px;
+		}
+	</style>
+</th:block>
+<div layout:fragment="content">
+	<section class="custom-container">
+	  <div class="page-title">
+	        <div class="container">
+	            <h3 th:text="${type} + '정보 리스트'"></h3>
+	        </div>
+	    </div>
+	    <!-- board seach area -->
+	    <div id="board-search">
+	        <div class="container">
+	            <div class="search-window">
+					<!-- 게임 검색 -->
+	                <div th:if="${gameList}">
+		                 <form th:action="@{/admin/game/search/1}" method="get">
+		                    <div class="search-wrap">
+		                        <label for="search" class="blind">게임리스트 내 검색</label>
+		                        <select name="searchType" >
+                                    <option value="1">앱아이디</option>
+                                    <option value="0">제목</option>
+                                </select>
+		                        <input id="search" type="search" name="search" placeholder="검색어를 입력해주세요.">
+		                        <button type="submit" class="btn btn-dark">검색</button>
+		                    </div>
+		                </form>
+		            </div>
+		            
+		            <!-- 유저 검색 -->
+	                <div th:if="${userList}">
+		                <form th:action="@{/admin/user/search/1}" method="get">
+		                    <div class="search-wrap">
+		                        <label for="search" class="blind">공지사항 내용 검색</label>
+		                        <select>
+									<option th:feild="*{user}">유저 아이디</option>
+								</select>
+								<input type="hidden" name="searchType" value="0">
+		                        <input id="search" type="search" name="search" placeholder="검색어를 입력해주세요.">
+		                        <button type="submit" class="btn btn-dark">검색</button>
+		                    </div>
+		                </form>
+		            </div>
+		            
+	            </div>
+	        </div>
+	    </div>
+	   
+	  <!-- board list area -->
+	    <div id="board-list" >
+	        <div class="container">
+	            <table class="board-table">
+	                <thead>
+	                <tr>
+	                    <th scope="col" class="th-num">번호</th>
+	                    <th scope="col" class="th-title">제목</th>
+	                </tr>
+	                </thead>
+	                <tbody>
+						<!-- 게임 리스트 출력 -->
+						<div th:if="${gameList}">
+						    <tr th:each="game : ${gameList}">
+								<td th:text="${game.appId}"></td>
+						        <td><a th:href="@{/admin/game/{appId}(appId=${game.appId})}" th:text="${game.title}"></a></td>
+						        <input type="hidden" th:value="${searchType}">
+						        <input type="hidden" th:value="${search}">
+						    </tr>
+						</div>
+						<!-- 유저 리스트 출력 -->
+						<div th:if="${userList}">
+						    <tr th:each="user, iterStat : ${userList}">
+								<td th:text="${iterStat.index + 1}"></td>
+						        <td><a th:href="@{/admin/user/{userId}(userId=${user.userId})}" th:text="${user.userId}"></a></td>
+						        <input type="hidden" th:value="${search}">
+						    </tr>
+						</div>
+	                </tbody>              
+	            </table>
+			   
+	        </div>
+	    </div>
+	</section>
+	<div class="list_box">
+		 <ul class="list_page">
+			<li th:if="${currentPage > 0}">
+		        <div th:onclick="|location.href='@{/admin/{type}/search/{prevPage}?searchType={searchType}&search={search}
+		        						(type=${type == '게임' ? 'game' : 'user'},prevPage=${page-1},searchType=${searchType},search=${search})}'|">Prev</div>
+		    </li>
+	        <li th:each="pageNum : ${#numbers.sequence(startPage, endPage)}">
+				<div th:onclick="|location.href='@{/admin/{type}/search/{page}?searchType={searchType}&search={search}
+										(type=${type == '게임' ? 'game' : 'user'},page=${pageNum},searchType=${searchType},search=${search})}'|" th:text="${pageNum}"
+										th:class="'page ' + (${page == pageNum} ? 'page-present' : '')"></div>
+	        </li>
+			<li th:if="${currentPage < pageCount}">
+				<div th:onclick="|location.href='@{/admin/{type}/search/{nextPage}?searchType={searchType}&search={search}
+										(type=${type == '게임' ? 'game' : 'user'},nextPage=${page+1},searchType=${searchType},search=${search})}'|">Next</div>
+		    </li>
+		    <li th:if="${pageCount == 1}">
+				<div th:onclick="|location.href='#'|">Next</div>
+		    </li>
+		</ul>
+	</div>
+</div>
+
+</html>
