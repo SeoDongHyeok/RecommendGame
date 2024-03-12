@@ -89,9 +89,7 @@ public class GameService {
 	
 	//AI게임추천 시스템
 	public List<Game> getRecommendGame(String userId,List<String> tagList) {
-//		String url = "http://192.168.0.135:5000"; // 형민 PC
 		String url = "http://localhost:5000";
-		//"http://192.168.0.135:5000"  "http://localhost:5000"
 		try {
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
