@@ -3,12 +3,14 @@
   * JPA
   * css
 
-<br>
+
+
   * Python
   * Beautiful Soup
   * Selenium
 
-<br>
+
+
   * MySQL
   * DBeaver
 
