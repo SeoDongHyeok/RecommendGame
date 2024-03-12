@@ -2,15 +2,9 @@
   * Spring Boot
   * JPA
   * css
-
-
-
   * Python
   * Beautiful Soup
   * Selenium
-
-
-
   * MySQL
   * DBeaver
 
