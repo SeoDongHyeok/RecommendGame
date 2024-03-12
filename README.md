@@ -1,4 +1,5 @@
-### AI기반 게임 추천사이트
+# AI기반 게임 추천사이트
+![Uploading logo.png…]()
 
 ## :books:개발 스택
   * Spring Boot
