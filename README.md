@@ -2,13 +2,13 @@
   * Spring Boot
   * JPA
   * css
-<br>
 
+<br>
   * Python
   * Beautiful Soup
   * Selenium
 
-
+<br>
   * MySQL
   * DBeaver
 
