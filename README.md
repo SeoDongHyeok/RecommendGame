@@ -6,6 +6,7 @@
   * Python
   * Beautiful Soup
   * Selenium
+  * flask
   * MySQL
   * DBeaver
 
