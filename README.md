@@ -2,6 +2,7 @@
   * Spring Boot
   * JPA
   * css
+  * eclipse
   * Python
   * Beautiful Soup
   * Selenium
