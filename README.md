@@ -2,7 +2,7 @@
   * Spring Boot
   * JPA
   * css
-  * <br>
+<br>
   * Python
   * Beautiful Soup
   * Selenium
