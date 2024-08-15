@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout2}">
+
 <th:block layout:fragment="script">
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
@@ -17,7 +18,7 @@
                 CateSelectedOptions.push(selectedValue);
                 var row = $('<tr>');
                 var cellText = $('<td>').text(selectedText);
-                var cellButton = $('<td>').append('<button type="button" onclick="removeCateSelectedOption(this)">삭제하기</button>');
+                var cellButton = $('<td>').append('<button type="button" class="tagButton" onclick="removeCateSelectedOption(this)">삭제하기</button>');
                 row.append(cellText, cellButton);
                 $('#cateSelectedOptions tbody').append(row);
                 document.getElementById('hCateHidden').value = CateSelectedOptions.join(',');
@@ -69,15 +70,15 @@
 </th:block>
 <h2>Login Content Page</h2>
 <h1></h1>
-<div layout:fragment="content">
-    <div style="width:1000px">
+<div layout:fragment="content" style="padding: 30px; background: linear-gradient(to bottom, #2A475E, #1B2838)">
+    <div>
         <select id="cateSelect">
             <option th:each="cate:${category}" th:text="${cate.category}" th:value="${cate.category}"></option>
         </select>
-        <button type="button" onclick="addCateSelectedOption()">태그 추가</button>
+        <button type="button" class="tagButton" onclick="addCateSelectedOption()">태그 추가</button>
     </div>
     <br>
-    <table id="cateSelectedOptions" class="table" style="width: 400; height: 300;">
+    <table id="cateSelectedOptions">
         <thead>
             <tr>
                 <th>선택한 옵션</th>
@@ -88,8 +89,9 @@
             <!-- 선택한 옵션을 표시할 곳 -->
         </tbody>
     </table>
-    <h1></h1>
     <input type="hidden" id="hCateHidden">
-    <button type="button" onclick="sendCategory()">추가 완료</button>
+    <div style="text-align: center; margin:10;">
+        <button type="button" class="btn btn-primary" onclick="sendCategory()" style="width:30%;">추가 완료</button>
+    </div>
 </div>
 </html>

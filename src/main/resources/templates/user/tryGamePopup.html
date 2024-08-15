@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout2}">
+
 <th:block layout:fragment="script">
 	<meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
@@ -54,18 +55,20 @@
     </script>
 </th:block>
 <h2>Login Content Page</h2>
-<div layout:fragment="content">
-    <div style="width:1000px">
-        <select id="tryGameSelect">
+<div layout:fragment="content" style="padding: 30px; background: linear-gradient(to bottom, #2A475E, #1B2838)">
+    <div >
+        <select id="tryGameSelect" style="width:300px">
             <option th:each="tryGame:${tryGameList}" th:text="${tryGame.title}" th:value="${tryGame.appId}"></option>
         </select>
-        <button type="button" onclick="addTryGameSelectedOption()">게임 추가</button>
+        <button type="button" class="tagButton" onclick="addTryGameSelectedOption()">게임 추가</button>
     </div>
     <br>
     <div id="tryGameSelectedOptions">
         <!-- 선택한 옵션을 표시할 곳 -->
         <input type="hidden" id="tryGameHidden">
     </div>
-    <button type="button" onclick="sendTryGame()">추가 완료</button>
+    <div style="text-align:center;">
+        <button type="button" class="btn btn-primary" onclick="sendTryGame()">추가 완료</button>
+    </div>
 </div>
 </html>

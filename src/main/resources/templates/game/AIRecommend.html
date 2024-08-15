@@ -14,12 +14,13 @@
             border-collapse: collapse;
             margin-bottom: 10px; /* 필요한 경우 조절 */
            	margin-left: 10%;
-            border: 1px solid  #ddd;
+            border: 5px solid rgba(0, 0, 0, 0.1);
+            background-color:#3D4450;
         }
 
         th, td {
-            border: 1px solid #ddd;
             padding: 8px;
+            border: 5px solid rgba(0, 0, 0, 0.1)
             text-align: left;
         }
 
@@ -27,12 +28,8 @@
             margin-top: 10px; /* 필요한 경우 조절 */
             
         }
-        .search_button{
-			margin-left: 43%;
-		}
 
         #cateSelect {
-            width: 80%; /* 셀렉트 박스가 테이블의 전체 너비를 차지하도록 함 */
             margin-bottom: 10px; /* 필요한 경우 조절 */
         }
 
@@ -63,7 +60,7 @@
 
                 var row = $('<tr>');
                 var cell = $('<td class="selectedCategory">').text(selectedText);
-                var buttonCell = $('<td>').append('<button type="button" onclick="removeCateSelectedOption(this)">삭제하기</button>');
+                var buttonCell = $('<td>').append('<button type="button" class="tagButton" onclick="removeCateSelectedOption(this)">삭제하기</button>');
                 
                 row.append(cell, buttonCell);
                 $('#cateSelectedOptions tbody').append(row);
@@ -120,23 +117,24 @@
         <table id="cateSelectedOptions">
             <thead>
                 <tr>
-                    <th colspan="2"> <!-- 두 개의 셀로 병합 -->
+                    <th colspan="2" style="padding-top:10px;"> <!-- 두 개의 셀로 병합 -->
                     <select id="cateSelect">
                         <option th:each="cate:${category}" th:text="${cate.category}" th:value="${cate.category}"></option>
                     </select>
-                      <button type="button" onclick="addCateSelectedOption()">태그 추가하기</button>
+                      <button type="button" class="tagButton" onclick="addCateSelectedOption()">태그 추가하기</button>
                     </th>
                 </tr>
                 <tr>
-                    <th>선택한 옵션</th>
+                    <th colspan="2" style="padding-top:10px; border-top:2px solid rgba(255, 255, 255, 0.5);">선택한 옵션</th>
                 </tr>
             </thead>
             <tbody>
                 <!-- 선택한 옵션을 표시할 곳 -->
             </tbody>
         </table>
-
-        <button class="search_button" type="button" onclick="sendAICategory()">검색하기</button>
+        <div style="text-align:center;">
+            <button class="btn btn-primary" type="button" onclick="sendAICategory()">검색하기</button>
+        </div>
     </div>
      <div id="resultContainer">
         <!-- 이곳에 받아온 HTML을 주입할 것입니다. -->

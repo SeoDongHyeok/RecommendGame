@@ -236,7 +236,7 @@
 		</div>
 		<div class="form-group">
             <label th:for="hCate">싫어하는 카테고리</label>&nbsp;&nbsp;&nbsp;&nbsp;
-            <button type="button" onclick="openCategoryPopup()">태그 추가</button>
+            <button type="button" class="tagButton" onclick="openCategoryPopup()">태그 추가</button>
             <table id="hCateTable">
                 <thead>
                     <tr>
@@ -248,7 +248,7 @@
                     <tr th:each="hCate:${hCate}">
                         <td th:text="${hCate}" th:value="${hCate}" id="${hCate}"></td>
                         <td>
-                            <button type="button" onclick="deleteCategory(this)">태그 삭제</button>
+                            <button type="button" class="tagButton" onclick="deleteCategory(this)">태그 삭제</button>
                         </td>
                     </tr>
                 </tbody>
@@ -259,7 +259,7 @@
         <!-- 테이블로 변환된 부분 시작 -->
         <div class="form-group">
             <label th:for="tryGame">해본 게임</label>&nbsp;&nbsp;&nbsp;&nbsp;
-            <button type="button" onclick="openTryGamePopup()">게임 추가</button>
+            <button type="button" class="tagButton" onclick="openTryGamePopup()">게임 추가</button>
             <table id="tryGameTable">
                 <thead>
                     <tr>
@@ -271,7 +271,7 @@
                     <tr th:each="tryGame:${tryGame}">
                         <td th:text="${tryGame}" th:value="${tryGame}" id="${tryGame}"></td>
                         <td>
-                            <button type="button" onclick="deleteTryGame(this)">게임 삭제</button>
+                            <button type="button" class="tagButton" onclick="deleteTryGame(this)">게임 삭제</button>
                         </td>
                     </tr>
                 </tbody>

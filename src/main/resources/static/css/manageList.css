@@ -13,9 +13,12 @@ section.notice {
 }
 .page-title h3 {
   font-size: 28px;
-  color: #333333;
   font-weight: 400;
   text-align: center;
+  background: linear-gradient(to right, white, gray);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+  font-weight: bolder;
 }
 
 .search-wrap select {
@@ -28,6 +31,7 @@ section.notice {
   height: 73px;
   padding: 15px 0;
   background-color: #f9f7f9;
+  border-radius:3px;
 }
 #board-search .search-window .search-wrap {
   position: relative;
