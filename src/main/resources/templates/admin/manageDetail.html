@@ -128,7 +128,7 @@
 			<!-- 수정 버튼을 누를 때 해당 폼을 서버로 전송합니다 -->
 			<button type="submit" class="btn btn-primary">게임수정</button>
 			<button type="button" class="btn btn-primary" onclick="gameDeleteFunction(this)" th:data-appId="${game.appId}">게임삭제</button>
-			<button type="button" class="btn btn-primary" onclick="location.href='/admin/manageList/game';">돌아가기</button>
+			<button type="button" class="btn btn-primary" onclick="window.history.back();">돌아가기</button>
 		    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
 		</div>
 	</form>
@@ -164,7 +164,7 @@
 			</table>
 			<div style="text-align: center">
 				<button th:if="${user.role.name()=='USER'}" type="button" class="btn btn-primary" onclick="userDeleteFunction(this)" th:data-userId="${user.userId}">유저삭제</button>
-				<button type="button" class="btn btn-primary" onclick="location.href='/admin/manageList/user';">돌아가기</button>
+				<button type="button" class="btn btn-primary" onclick="window.history.back();">돌아가기</button>
 				<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
 			</div>
 		</div>

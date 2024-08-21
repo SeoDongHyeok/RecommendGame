@@ -82,8 +82,8 @@ public class UserController {
 		try {
 			User user = User.createUser(userFormdto, passwordEncoder);
 			userService.saveUser(user);
-			if(tryArray[0].equals("")) {
-				userService.saveUserTryGame(user.getUserNo(),tryArray);
+			if(!(tryArray[0].equals(""))) {
+				userService.saveUserTryGame(user.getUserNo(), tryArray);
 			}
 		} catch (IllegalStateException e) {
 			model.addAttribute("errorMessage", e.getMessage());

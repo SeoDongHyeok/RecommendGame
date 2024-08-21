@@ -4,16 +4,16 @@
 
 <div th:fragment="header">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-		<div class="container-fluid">
-			<a class="navbar-brand" href="/"><img src="/images/logo.png" style="width: 80px; height: 80px;"/><br>Darimy</a>
+	<nav class="navbar navbar-expand-lg navbar-dark" style="background-color:#171a21">
+		<div class="container-fluid" >
+			<a class="navbar-brand" href="/" style="text-align:center; font-size:x-large; font-family:fantasy"><img src="/images/logo.png" style="width: 80px; height: 80px;"/><br>Darimy</a>
 			<button class="navbar-toggler" type="button"
 				data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
 				aria-controls="navbarSupportedContent" aria-expanded="false"
 				aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
-			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<div class="collapse navbar-collapse" id="navbarSupportedContent" style="margin-left:50px;">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 					<li class="nav-item" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
 						<a class="nav-link active"	aria-current="page" href="/admin/game/search/1?searchType=1&search=">게임관리</a>
@@ -40,9 +40,9 @@
 						<a class="nav-link active"	aria-current="page" href="/user/logout">로그아웃</a>
 					</li>
 				</ul>
-				<form method="get" th:action="@{/game/search/1}" class="form-controller d-flex align-items-center">
+				<form method="get" th:action="@{/game/search/1}" class="form-controller d-flex align-items-center" style="margin:0; padding:20px;">
 				    <input class="form-control me-2" type="search" placeholder="Search" name="search" aria-label="Search" style="width: 50%;">
-				    <button class="btn btn-outline-success" type="submit">Search</button>
+				    <button class="searchBtn" type="submit">Search</button>
 				</form>
 			</div>
 		</div>
